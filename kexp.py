@@ -38,7 +38,7 @@ def main(args):
     Main method
     '''
     if len(args) < 4:
-        print ("Please provide the necessary parameters ie main.py [playlist_name] [start_date] [end_date] [playlist_description]")
+        print ("Please provide the necessary parameters ie kexp.py [playlist_name] [start_date] [end_date] [playlist_description]")
     else:
         #The name of the playlist you want to use in Spotify
         #If this playlist does not exist a new one with this name will be created
