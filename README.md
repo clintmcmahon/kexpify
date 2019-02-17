@@ -49,7 +49,7 @@ SPOTIFY_REDIRECT_URI = 'http://localhost'
 
 Run the code
 ```
-python3 main.py [playlist_name] [start_date] [end_date] [playlist_description]
+python3 kexp.py [playlist_name] [start_date] [end_date] [playlist_description]
 ```
 A browser window will automatically open where you will authenticate with Spotify. After you've given access to your Spotify account the browser will redirect to a http://localhost url. Copy the localhost url and paste it into the command line. You'll only need to do this once, the code will create a cache authentication file on your local machine.
 
