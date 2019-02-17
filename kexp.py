@@ -33,31 +33,30 @@ def get_tracks(uri, start_date, end_date):
     return tracks    
 
 
-def main():
+def main(args):
     '''
     Main method
     '''
-
-    if len(sys.argv) < 4:
+    if len(args) < 4:
         print ("Please provide the necessary parameters ie main.py [playlist_name] [start_date] [end_date] [playlist_description]")
     else:
         #The name of the playlist you want to use in Spotify
         #If this playlist does not exist a new one with this name will be created
         #If this playlist exists it will be used
-        playlist_name = sys.argv[1]
+        playlist_name = args[0]
         
         #The start date time of the tracks you want to return. 
         #The KEXP API is in UTC format so make this date must be in the UTC format and timezone
         #Example: 2019-02-15T02:00:00Z
-        start_date = sys.argv[2]
+        start_date = args[1]
 
         #The end date time of the tracks you want to return. 
         #The KEXP API is in UTC format so make this date must be in the UTC format and timezone
         #Example: 2019-02-15T05:00:00Z
-        end_date = sys.argv[3]
+        end_date = args[2]
 
         #The description of the playlist you want to appear in Spotify
-        playlist_description = sys.argv[4]
+        playlist_description = args[3]
 
         #Go to the end date and then come back
         #This is a terrible method but I have not figured out how the KEXP API really works yet
@@ -74,4 +73,4 @@ def main():
         spotify.create_playlist(playlist)
 
 if __name__ == '__main__':
-    main()
+     main(sys.argv[1:])
