@@ -16,7 +16,7 @@ if __name__ == '__main__':
     end_date = (datetime.datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%SZ") + timedelta(hours=3)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     name = "Friday Night With DJ Michele Myers On KEXP"
-    description = "A weekly playlist recapping Michele Myer's latest Friday Night on KEXP Seattle. Spinning dance-worthy sets of electronic, soul, R&B, hip hop, rock and more, while showcasing artists of diverse backgrounds and music styles with a deep focus on women musicians. Support the music, donate now @ KEXP.org"
+    description = "Michele Myer's latest Friday Night on KEXP Seattle. Spinning dance-worthy sets of electronic, soul, R&B, hip hop, rock and more. Updated every Friday night. Support the music, donate now @ KEXP.org"
     args = [name,start_date, end_date, description]
     kexp.main(args)
 

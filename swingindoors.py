@@ -16,7 +16,7 @@ if __name__ == '__main__':
     end_date = (datetime.datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%SZ") + timedelta(hours=3)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     name = "Swingin Doors On KEXP"
-    description = "A weekly playlist recapping Don Slack's latest Swingin' Doors show on KEXP Seattle. Dedicated to a wide range of country sounds and styles, from honky tonk and western swing to alternative country and bluegrass. Updated every week. If you like this playlist consider donating @ KEXP.org"
+    description = "Don Slack's latest Swingin' Doors show on KEXP Seattle. Dedicated to a wide range of country sounds and styles, from honky tonk and western swing to alternative country and bluegrass. Updated every Thursday. Support the music and donate @ KEXP.org"
     args = [name,start_date, end_date, description]
     kexp.main(args)
 

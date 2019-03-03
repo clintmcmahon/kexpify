@@ -3,6 +3,7 @@
 import sys
 import pytz
 import datetime
+from datetime import timedelta
 from spotify import Spotify
 from playlist import Playlist
 import json
@@ -16,13 +17,11 @@ def get_tracks(uri, start_date, end_date):
             
     response = requests.get(uri)
     data = response.json()
-    start = datetime.datetime.strptime(start_date, '%Y-%m-%dT%H:%M:%SZ')
-    end = datetime.datetime.strptime(end_date, '%Y-%m-%dT%H:%M:%SZ')
-    
+    print (uri)
     for result in data['results']:
         if result['airdate'] is not None:
             airdate = datetime.datetime.strptime(result['airdate'], '%Y-%m-%dT%H:%M:%SZ')
-            if start <= airdate <= end:
+            if start_date <= airdate <= end_date:
                 if result['artist'] is not None:
                     artist = result['artist']['name']
                     track = result['track']['name'].replace("’", '').replace("'", '')
@@ -58,9 +57,9 @@ def main(args):
         #The description of the playlist you want to appear in Spotify
         playlist_description = args[3]
 
-        #Go to the end date and then come back
-        #This is a terrible method but I have not figured out how the KEXP API really works yet
-        uri = 'https://legacy-api.kexp.org/play/?limit=200&end_time=' + end_date + '&ordering=-airdate'
+        days_to_add = 0
+        if len(args) > 4:
+            days_to_add = args[4]
 
         #Create new Playlist object
         #Set this particular playlist properties
@@ -69,7 +68,30 @@ def main(args):
         spotify = Spotify()
         playlist.name =  playlist_name
         playlist.description = playlist_description
-        playlist.tracks = get_tracks(uri, start_date, end_date)
+
+        start = datetime.datetime.strptime(start_date, '%Y-%m-%dT%H:%M:%SZ')
+        end = datetime.datetime.strptime(end_date, '%Y-%m-%dT%H:%M:%SZ')   
+
+        if days_to_add > 0:
+            days_count = 0
+            while days_count <= days_to_add:
+                #Walk back for each day
+                day_start = start + timedelta(days=-days_count)
+                day_end = end + timedelta(days=-days_count)
+
+                print (day_start)
+                print (day_end)
+                #Go to the end date and then come back
+                #This is a terrible method but I have not figured out how the KEXP API really works yet
+                uri = 'https://legacy-api.kexp.org/play/?limit=200&end_time=' + day_end.strftime("%Y-%m-%dT%H:%M:%SZ") + '&ordering=-airdate'
+                playlist.tracks.extend(get_tracks(uri, day_start, day_end))
+
+                days_count += 1
+        else:
+            #Go to the end date and then come back
+            #This is a terrible method but I have not figured out how the KEXP API really works yet
+            uri = 'https://legacy-api.kexp.org/play/?limit=200&end_time=' + end.strftime("%Y-%m-%dT%H:%M:%SZ") + '&ordering=-airdate'
+            playlist.tracks = get_tracks(uri, start, end)
         spotify.create_playlist(playlist)
 
 if __name__ == '__main__':
