@@ -12,8 +12,9 @@ if __name__ == '__main__':
 
     #John In The Morning starts at 14:00 (2pm) UTC time
     #Go back five days
-    start_date = utc_datetime.strftime("%Y-%m-%dT14:00:00Z")
-
+    #start_date = utc_datetime.strftime("%Y-%m-%dT14:00:00Z")
+    start_date = datetime.datetime(2019, 3, 1).strftime("%Y-%m-%dT14:00:00Z")
+    
     #John In The Morning ends at 6 UTC time
     end_date = (datetime.datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%SZ") + timedelta(hours=4)).strftime("%Y-%m-%dT%H:%M:%SZ")
 

@@ -25,9 +25,8 @@ def get_tracks(uri, start_date, end_date):
                 if result['artist'] is not None:
                     artist = result['artist']['name']
                     track = result['track']['name'].replace("’", '').replace("'", '')
-                    print (artist, '-', track)
-                
-                    tracks.append({'artist': artist, 'song': track})
+                                      
+                    tracks.append({'artist': artist, 'song': track, 'airdate': airdate})
             
     return tracks    
 
@@ -79,8 +78,6 @@ def main(args):
                 day_start = start + timedelta(days=-days_count)
                 day_end = end + timedelta(days=-days_count)
 
-                print (day_start)
-                print (day_end)
                 #Go to the end date and then come back
                 #This is a terrible method but I have not figured out how the KEXP API really works yet
                 uri = 'https://legacy-api.kexp.org/play/?limit=200&end_time=' + day_end.strftime("%Y-%m-%dT%H:%M:%SZ") + '&ordering=-airdate'
@@ -92,7 +89,15 @@ def main(args):
             #This is a terrible method but I have not figured out how the KEXP API really works yet
             uri = 'https://legacy-api.kexp.org/play/?limit=200&end_time=' + end.strftime("%Y-%m-%dT%H:%M:%SZ") + '&ordering=-airdate'
             playlist.tracks = get_tracks(uri, start, end)
+            
+        playlist.tracks.sort(key=extract_time, reverse=False)
         spotify.create_playlist(playlist)
 
+def extract_time(json):
+    try:
+        return json['airdate']
+    except KeyError:
+        return 0
+        
 if __name__ == '__main__':
      main(sys.argv[1:])
