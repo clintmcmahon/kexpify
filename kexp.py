@@ -17,7 +17,7 @@ def get_tracks(uri, start_date, end_date):
             
     response = requests.get(uri)
     data = response.json()
-    print (uri)
+
     for result in data['results']:
         if result['airdate'] is not None:
             airdate = datetime.datetime.strptime(result['airdate'], '%Y-%m-%dT%H:%M:%SZ')
@@ -98,6 +98,6 @@ def extract_time(json):
         return json['airdate']
     except KeyError:
         return 0
-        
+
 if __name__ == '__main__':
      main(sys.argv[1:])
