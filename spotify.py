@@ -44,8 +44,8 @@ class Spotify(object):
         
         print ('Building new playlist with id:', playlist_id)
         for track in playlist.tracks:
-            artist = track['artist']
-            track = track['song']
+            artist = track.artist
+            track = track.title
             self.add_track(artist, track, playlist_id)
 
         return playlist_id

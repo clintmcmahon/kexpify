@@ -8,6 +8,7 @@ from spotify import Spotify
 from playlist import Playlist
 import json
 import requests
+from track import Track
 
 def get_tracks(uri, start_date, end_date):
     '''
@@ -25,8 +26,7 @@ def get_tracks(uri, start_date, end_date):
                 if result['artist'] is not None:
                     artist = result['artist']['name']
                     track = result['track']['name'].replace("’", '').replace("'", '')
-                                      
-                    tracks.append({'artist': artist, 'song': track, 'airdate': airdate})
+                    tracks.append({'artist': artist, 'song': track, 'airdate': airdate.strftime("%Y-%m-%dT%H:%M:%SZ")})
             
     return tracks    
 
@@ -70,7 +70,7 @@ def main(args):
 
         start = datetime.datetime.strptime(start_date, '%Y-%m-%dT%H:%M:%SZ')
         end = datetime.datetime.strptime(end_date, '%Y-%m-%dT%H:%M:%SZ')   
-
+        temp_tracks = []
         if days_to_add > 0:
             days_count = 0
             while days_count <= days_to_add:
@@ -81,21 +81,29 @@ def main(args):
                 #Go to the end date and then come back
                 #This is a terrible method but I have not figured out how the KEXP API really works yet
                 uri = 'https://legacy-api.kexp.org/play/?limit=200&end_time=' + day_end.strftime("%Y-%m-%dT%H:%M:%SZ") + '&ordering=-airdate'
-                playlist.tracks.extend(get_tracks(uri, day_start, day_end))
+                temp_tracks.extend(get_tracks(uri, day_start, day_end))
 
                 days_count += 1
         else:
             #Go to the end date and then come back
             #This is a terrible method but I have not figured out how the KEXP API really works yet
             uri = 'https://legacy-api.kexp.org/play/?limit=200&end_time=' + end.strftime("%Y-%m-%dT%H:%M:%SZ") + '&ordering=-airdate'
-            playlist.tracks = get_tracks(uri, start, end)
-            
+            temp_tracks = get_tracks(uri, start, end)
+
+        for temp_track in temp_tracks:
+            if not any(x.airdate == temp_track['airdate'] for x in playlist.tracks):
+                track = Track()
+                track.artist = temp_track['artist']
+                track.title = temp_track['song']
+                track.airdate = temp_track['airdate']
+                playlist.tracks.append(track)
+    
         playlist.tracks.sort(key=extract_time, reverse=False)
         spotify.create_playlist(playlist)
 
 def extract_time(json):
     try:
-        return json['airdate']
+        return json.airdate
     except KeyError:
         return 0
 
