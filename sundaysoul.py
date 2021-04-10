@@ -4,12 +4,12 @@ from datetime import timedelta
 
 if __name__ == '__main__':
 
-    #This is being run at UTC Thursday morning so we check and go
+    #This is being run at UTC Monday morning so we check and go
     #back to the day the playlist is available
     today = datetime.datetime.today().weekday()
-    if today == 3: 
+    if today == 1: 
       
-       #Go back to Wednesday
+       #Go back to Sunday
       now = datetime.datetime.now() + timedelta(days=-1)
       
       #Set the time zone to west coast Seattle
@@ -18,14 +18,14 @@ if __name__ == '__main__':
       print("Date & Time in Seattle : ", 
         datetime_pacific.strftime('%Y-%m-%dT%H:%M:%SZ'))
       
-      #Roadhouse starts at 7 PM Seattle time
-      start_date = datetime_pacific.strftime('%Y-%m-%dT19:00:00Z')
+      #Sunday Soul starts at 6 PM Seattle time
+      start_date = datetime_pacific.strftime('%Y-%m-%dT18:00:00Z')
 
-      #Roudhouse ends at 10 PM Seattle time
-      end_date = datetime_pacific.strftime('%Y-%m-%dT22:00:00Z')
+      #Sunday Soul ends at 9 PM Seattle time
+      end_date = datetime_pacific.strftime('%Y-%m-%dT21:00:00Z')
 
-      name = "The Roadhouse on KEXP"
-      description = "A playlist from the latest Roadhouse show on KEXP Seattle. Updated every Wednesday night. Support the music and donate @ KEXP.org"
+      name = "Sunday Soul on KEXP"
+      description = "A playlist from the latest Sunday Soul show on KEXP Seattle. Updated every Sunday night. Support the music and donate @ KEXP.org"
       args = [name,start_date, end_date, description]
       kexp.main(args)
     else:
