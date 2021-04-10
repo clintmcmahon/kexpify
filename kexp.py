@@ -17,11 +17,9 @@ def get_tracks(uri, start_date, end_date):
     tracks = []
     response = requests.get(uri)
     data = response.json()
-
+    print(uri)
     for result in data['results']:
-        print (result)
         if 'artist' in result:
-            print (result['artist'])
             artist = result['artist']
             song = result['song']
             airdate = result['airdate']
@@ -61,10 +59,8 @@ def main(args):
         playlist.name =  playlist_name
         playlist.description = playlist_description
 
-        #start = datetime.datetime.strptime(start_date, '%Y-%m-%dT%H:%M:%SZ')
-        #end = datetime.datetime.strptime(end_date, '%Y-%m-%dT%H:%M:%SZ')   
         temp_tracks = []
-        uri = f'https://api.kexp.org/v2/plays/?airdate_after={start_date}&airdate_before={end_date}&album=&album_exact=&artist=&artist_exact=&exclude_airbreaks=&has_comment=&host_ids=&label=&label_exact=&limit=200&ordering=airdate&recording_id=&show_ids=&song=&song_exact='
+        uri = f'https://api.kexp.org/v2/plays/?airdate_after={start_date}&airdate_before={end_date}&album=&album_exact=&artist=&artist_exact=&exclude_airbreaks=&has_comment=&host_ids=&label=&label_exact=&limit=2000&ordering=airdate&recording_id=&show_ids=&song=&song_exact='
         temp_tracks = get_tracks(uri, start_date, end_date)
         for temp_track in temp_tracks:
             if not any(x.airdate == temp_track['airdate'] for x in playlist.tracks):

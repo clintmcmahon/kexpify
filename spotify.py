@@ -33,8 +33,8 @@ class Spotify(object):
                 playlist_id = my_playlist['id']
                 self.spotify.user_playlist_change_details(user=self.username, playlist_id=playlist_id, description=playlist_description)
                 print('Using existing playlist', playlist_name)
-                #print('Deleting existing tracks from playlist', playlist_name)
-                #self.remove_tracks(playlist_id)
+                print('Deleting existing tracks from playlist', playlist_name)
+                self.remove_tracks(playlist_id)
                 break
         
         if playlist_id == 0:
