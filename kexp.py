@@ -15,27 +15,24 @@ def get_tracks(uri, start_date, end_date):
     Takes the playlist uri and returns the tracks played
     '''
     tracks = []
-            
     response = requests.get(uri)
     data = response.json()
 
     for result in data['results']:
-        if result['airdate'] is not None:
-            airdate = datetime.datetime.strptime(result['airdate'], '%Y-%m-%dT%H:%M:%SZ')
-            if start_date <= airdate <= end_date:
-                if result['artist'] is not None:
-                    artist = result['artist']['name']
-                    track = result['track']['name'].replace("’", '').replace("'", '')
-                    tracks.append({'artist': artist, 'song': track, 'airdate': airdate.strftime("%Y-%m-%dT%H:%M:%SZ")})
-            
+        print (result)
+        if 'artist' in result:
+            print (result['artist'])
+            artist = result['artist']
+            song = result['song']
+            airdate = result['airdate']
+            tracks.append({'artist': artist, 'song': song, 'airdate': airdate})
     return tracks    
-
 
 def main(args):
     '''
     Main method
     '''
-    if len(args) < 4:
+    if len(args) < 3:
         print ("Please provide the necessary parameters ie kexp.py [playlist_name] [start_date] [end_date] [playlist_description]")
     else:
         #The name of the playlist you want to use in Spotify
@@ -56,10 +53,6 @@ def main(args):
         #The description of the playlist you want to appear in Spotify
         playlist_description = args[3]
 
-        days_to_add = 0
-        if len(args) > 4:
-            days_to_add = args[4]
-
         #Create new Playlist object
         #Set this particular playlist properties
         #Send the playlist object into Spotify to create/update the latest
@@ -68,28 +61,11 @@ def main(args):
         playlist.name =  playlist_name
         playlist.description = playlist_description
 
-        start = datetime.datetime.strptime(start_date, '%Y-%m-%dT%H:%M:%SZ')
-        end = datetime.datetime.strptime(end_date, '%Y-%m-%dT%H:%M:%SZ')   
+        #start = datetime.datetime.strptime(start_date, '%Y-%m-%dT%H:%M:%SZ')
+        #end = datetime.datetime.strptime(end_date, '%Y-%m-%dT%H:%M:%SZ')   
         temp_tracks = []
-        if days_to_add > 0:
-            days_count = 0
-            while days_count <= days_to_add:
-                #Walk back for each day
-                day_start = start + timedelta(days=-days_count)
-                day_end = end + timedelta(days=-days_count)
-
-                #Go to the end date and then come back
-                #This is a terrible method but I have not figured out how the KEXP API really works yet
-                uri = 'https://legacy-api.kexp.org/play/?limit=200&end_time=' + day_end.strftime("%Y-%m-%dT%H:%M:%SZ") + '&ordering=-airdate'
-                temp_tracks.extend(get_tracks(uri, day_start, day_end))
-
-                days_count += 1
-        else:
-            #Go to the end date and then come back
-            #This is a terrible method but I have not figured out how the KEXP API really works yet
-            uri = 'https://legacy-api.kexp.org/play/?limit=200&end_time=' + end.strftime("%Y-%m-%dT%H:%M:%SZ") + '&ordering=-airdate'
-            temp_tracks = get_tracks(uri, start, end)
-
+        uri = f'https://api.kexp.org/v2/plays/?airdate_after={start_date}&airdate_before={end_date}&album=&album_exact=&artist=&artist_exact=&exclude_airbreaks=&has_comment=&host_ids=&label=&label_exact=&limit=200&ordering=airdate&recording_id=&show_ids=&song=&song_exact='
+        temp_tracks = get_tracks(uri, start_date, end_date)
         for temp_track in temp_tracks:
             if not any(x.airdate == temp_track['airdate'] for x in playlist.tracks):
                 track = Track()
