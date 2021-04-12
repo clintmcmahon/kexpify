@@ -7,9 +7,9 @@ if __name__ == '__main__':
     #This is being run at UTC Monday morning so we check and go
     #back to the day the playlist is available
     today = datetime.datetime.today().weekday()
-    if today == 1: 
+    if today == 0: 
       
-       #Go back to Sunday
+      #Go back to Sunday
       now = datetime.datetime.now() + timedelta(days=-1)
       
       #Set the time zone to west coast Seattle
