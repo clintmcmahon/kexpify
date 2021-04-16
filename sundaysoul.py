@@ -7,7 +7,7 @@ if __name__ == '__main__':
    #This is being run at UTC Thursday morning so we check and go
     #back to the day the playlist is available
     today = datetime.datetime.today().weekday()
-    if today == 1: 
+    if today == 0: 
       
       #Set the time zone to west coast Seattle
       tz = pytz.timezone('America/Los_Angeles')

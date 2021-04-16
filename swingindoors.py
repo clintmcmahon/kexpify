@@ -22,7 +22,7 @@ if __name__ == '__main__':
       end_date = datetime_pacific.strftime('%Y-%m-%dT22:00:00Z')
 
       name = "Swingin Doors on KEXP"
-      description = "A playlist from the latest Swingin Doors show on KEXP Seattle. Updated every Wednesday night. Support the music and donate @ KEXP.org"
+      description = "A playlist from the latest Swingin Doors show on KEXP Seattle. Updated every Thursday night. Support the music and donate @ KEXP.org"
       args = [name,start_date, end_date, description]
       kexp.main(args)
     else:
