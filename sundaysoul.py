@@ -16,10 +16,10 @@ if __name__ == '__main__':
       datetime_pacific =  datetime.datetime.now(tz) + datetime.timedelta(days=-1)
       
       #Sunday Soul starts at 6 PM Seattle time
-      start_date = datetime_pacific.strftime('%Y-%m-%dT18:00:00Z')
+      start_date = datetime_pacific.strftime('%Y-%m-%dT18:00:00')
 
       #Sunday Soul ends at 9 PM Seattle time
-      end_date = datetime_pacific.strftime('%Y-%m-%dT21:00:00Z')
+      end_date = datetime_pacific.strftime('%Y-%m-%dT21:00:00')
 
       name = "Sunday Soul on KEXP"
       description = "A playlist from the latest Sunday Soul show on KEXP Seattle. Updated every Sunday night. Support the music and donate @ KEXP.org"

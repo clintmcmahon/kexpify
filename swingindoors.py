@@ -16,10 +16,10 @@ if __name__ == '__main__':
       datetime_pacific =  datetime.datetime.now(tz) + datetime.timedelta(days=-1)
       
       #Swingin Doors starts at 7 PM Seattle time
-      start_date = datetime_pacific.strftime('%Y-%m-%dT19:00:00Z')
+      start_date = datetime_pacific.strftime('%Y-%m-%dT19:00:00')
 
       #Swingin Doors ends at 10 PM Seattle time
-      end_date = datetime_pacific.strftime('%Y-%m-%dT22:00:00Z')
+      end_date = datetime_pacific.strftime('%Y-%m-%dT22:00:00')
 
       name = "Swingin Doors on KEXP"
       description = "A playlist from the latest Swingin Doors show on KEXP Seattle. Updated every Thursday night. Support the music and donate @ KEXP.org"
